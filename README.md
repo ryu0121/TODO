@@ -1,24 +1,26 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## モノシリックなRails アプリの環境構築
 
-Things you may want to cover:
+### イメージ構築
+`docker-compose build`
 
-* Ruby version
+### MySQL のplugin を修正(ver8.0 以降の問題)
+`docker exec -it container-name(db) bash`(コンテナ名はdocker ps で確認)
 
-* System dependencies
+`mysql -uroot -p`
 
-* Configuration
+`mysql> SELECT user, host, plugin FROM mysql.user;`
 
-* Database creation
+`ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';`
 
-* Database initialization
+`ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'password';`
 
-* How to run the test suite
+`SELECT user, host, plugin FROM mysql.user;`
 
-* Services (job queues, cache servers, search engines, etc.)
+### localhostにアクセス
+`docker exec container-name(web) bash`
 
-* Deployment instructions
+`rails db:create db:migrate`
 
-* ...
+localhost に接続
